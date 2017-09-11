@@ -86,6 +86,7 @@ spec:
     metadata:
       labels:
         app: ${APP_NAME}
+        team: ${TEAM_NAME}
       annotations:
         # Enable automatic monitoring of all instances when Prometheus is running in the cluster.
         prometheus.io/scrape: "true"
