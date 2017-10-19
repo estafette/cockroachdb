@@ -212,7 +212,8 @@ metadata:
     estafette.io/cloudflare-hostnames: "${HOSTNAMES}"
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: ${EXTERNAL_TRAFFIC_POLICY}
+  loadBalancerSourceRanges: [ ${CLOUDFLARE_IP_RANGES} ]
+  externalTrafficPolicy: Cluster
   selector:
     app: ${APP_NAME}-admin
   ports:
