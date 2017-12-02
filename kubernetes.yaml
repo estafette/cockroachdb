@@ -322,8 +322,6 @@ spec:
           value: "${NAMESPACE}"
         - name: "HEALT_CHECK_PATH"
           value: "/health"
-        - name: "ALLOW_CIDRS"
-          value: "${ALLOW_CIDRS}"
         volumeMounts:
         - name: ssl-certificate
           mountPath: /etc/ssl/private
