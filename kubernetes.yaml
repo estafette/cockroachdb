@@ -126,6 +126,15 @@ spec:
                 values:
                 - ${APP_NAME}
             topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 10
+            preference:
+              matchExpressions:
+              - key: cloud.google.com/gke-preemptible
+                operator: In
+                values:
+                - "true"
       containers:
       - name: ${APP_NAME}
         # Runs the master branch. Not recommended for production, but since
@@ -289,6 +298,16 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9101"
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 10
+            preference:
+              matchExpressions:
+              - key: cloud.google.com/gke-preemptible
+                operator: In
+                values:
+                - "true"
       containers:
       - name: ${APP_NAME}-nginx
         image: estafette/nginx-sidecar:1.12.1
