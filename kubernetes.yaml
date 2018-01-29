@@ -309,8 +309,8 @@ spec:
                 values:
                 - "true"
       containers:
-      - name: ${APP_NAME}-nginx
-        image: estafette/nginx-sidecar:1.12.1
+      - name: ${APP_NAME}-openresty
+        image: estafette/openresty-sidecar:1.13.6.1-alpine
         imagePullPolicy: IfNotPresent
         resources:
           limits:
