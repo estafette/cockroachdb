@@ -71,7 +71,7 @@ spec:
   selector:
     matchLabels:
       app: ${APP_NAME}
-  minAvailable: 67%
+  minAvailable: 66%
 ---
 apiVersion: apps/v1beta1
 kind: StatefulSet
