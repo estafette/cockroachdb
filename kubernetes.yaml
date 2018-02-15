@@ -82,6 +82,9 @@ spec:
   replicas: ${REPLICAS}
   updateStrategy:
     type: "RollingUpdate"
+  selector:
+    matchLabels:
+      app: ${APP_NAME}
   template:
     metadata:
       labels:
