@@ -126,6 +126,9 @@ spec:
           limits:
             cpu: ${CPU_LIMIT}
             memory: ${MEMORY_LIMIT}
+        env:
+        - name: "COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING"
+          value: "true"
         ports:
         - containerPort: 26257
           name: grpc
