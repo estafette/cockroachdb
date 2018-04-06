@@ -117,11 +117,6 @@ spec:
                 - "true"
       containers:
       - name: ${APP_NAME}
-        # Runs the master branch. Not recommended for production, but since
-        # CockroachDB is in Beta, you don't want to run it in production
-        # anyway. See
-        # https://hub.docker.com/r/cockroachdb/cockroach/tags/
-        # if you prefer to run a beta release.
         image: cockroachdb/cockroach:${COCKROACHDB_VERSION}
         imagePullPolicy: IfNotPresent
         resources:
@@ -142,26 +137,9 @@ spec:
         command:
           - "/bin/bash"
           - "-ecx"
-          - |
-            # The use of qualified `hostname -f` is crucial:
-            # Other nodes aren't able to look up the unqualified hostname.
-            CRARGS=("start" "--cache=25%" "--max-sql-memory=25%" "--logtostderr" "--insecure" "--host" "$(hostname -f)" "--http-host" "0.0.0.0" "--locality" "${LOCALITY}")
-            # We only want to initialize a new cluster (by omitting the join flag)
-            # if we're sure that we're the first node (i.e. index 0) and that
-            # there aren't any other nodes running as part of the cluster that
-            # this is supposed to be a part of (which indicates that a cluster
-            # already exists and we should make sure not to create a new one).
-            # It's fine to run without --join on a restart if there aren't any
-            # other nodes.
-            if [ ! "$(hostname)" == "${APP_NAME}-0" ] || \
-               [ -e "/cockroach/cockroach-data/cluster_exists_marker" ]
-            then
-              # We don't join cockroachdb in order to avoid a node attempting
-              # to join itself, which currently doesn't work
-              # (https://github.com/cockroachdb/cockroach/issues/9625).
-              CRARGS+=("--join" "${APP_NAME}-public")
-            fi
-            exec /cockroach/cockroach ${CRARGS[*]}
+          # The use of qualified `hostname -f` is crucial:
+          # Other nodes aren't able to look up the unqualified hostname.
+          - "exec /cockroach/cockroach start --logtostderr --insecure --advertise-host $(hostname -f) --http-host 0.0.0.0 --join ${APP_NAME}-0.${NAMESPACE},${APP_NAME}-1.${NAMESPACE},${APP_NAME}-2.${NAMESPACE} --cache 25% --max-sql-memory 25% --locality ${LOCALITY}"
         livenessProbe:
           httpGet:
             path: /health
@@ -362,3 +340,25 @@ spec:
       - name: ssl-certificate
         secret:
           secretName: ${APP_NAME}-letsencrypt-certificate
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ${APP_NAME}-cluster-init
+  namespace: ${NAMESPACE}
+  labels:
+    app: ${APP_NAME}
+    team: ${TEAM_NAME}
+spec:
+  template:
+    spec:
+      containers:
+      - name: cluster-init
+        image: cockroachdb/cockroach:${COCKROACHDB_VERSION}
+        imagePullPolicy: IfNotPresent
+        command:
+          - "/cockroach/cockroach"
+          - "init"
+          - "--insecure"
+          - "--host=${APP_NAME}-0.${NAMESPACE}"
+      restartPolicy: OnFailure
