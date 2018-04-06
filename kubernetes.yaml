@@ -340,25 +340,25 @@ spec:
       - name: ssl-certificate
         secret:
           secretName: ${APP_NAME}-letsencrypt-certificate
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: ${APP_NAME}-cluster-init
-  namespace: ${NAMESPACE}
-  labels:
-    app: ${APP_NAME}
-    team: ${TEAM_NAME}
-spec:
-  template:
-    spec:
-      containers:
-      - name: cluster-init
-        image: cockroachdb/cockroach:${COCKROACHDB_VERSION}
-        imagePullPolicy: IfNotPresent
-        command:
-          - "/cockroach/cockroach"
-          - "init"
-          - "--insecure"
-          - "--host=${APP_NAME}-0.${NAMESPACE}"
-      restartPolicy: OnFailure
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: ${APP_NAME}-cluster-init
+#   namespace: ${NAMESPACE}
+#   labels:
+#     app: ${APP_NAME}
+#     team: ${TEAM_NAME}
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - name: cluster-init
+#         image: cockroachdb/cockroach:${COCKROACHDB_VERSION}
+#         imagePullPolicy: IfNotPresent
+#         command:
+#           - "/cockroach/cockroach"
+#           - "init"
+#           - "--insecure"
+#           - "--host=${APP_NAME}-0.${NAMESPACE}"
+#       restartPolicy: OnFailure
