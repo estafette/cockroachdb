@@ -179,8 +179,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "gce"
     kubernetes.io/ingress.allow-http: "false"
-    estafette.io/cloudflare-dns: "${CLOUDFLARE_CREATE_DNS_RECORD}"
-    estafette.io/cloudflare-proxy: "${CLOUDFLARE_ENABLE_PROXY}"
+    estafette.io/cloudflare-dns: "true"
+    estafette.io/cloudflare-proxy: "true"
     estafette.io/cloudflare-hostnames: "${HOSTNAMES}"
 spec:
   tls:
@@ -230,7 +230,7 @@ metadata:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
   annotations:
-    estafette.io/letsencrypt-certificate: "${LETSENCRYPT_CREATE_CERTIFICATE}"
+    estafette.io/letsencrypt-certificate: "true"
     estafette.io/letsencrypt-certificate-hostnames: "${HOSTNAMES}"
 ---
 apiVersion: policy/v1beta1
@@ -268,7 +268,6 @@ spec:
       labels:
         app: ${APP_NAME}-admin
         team: ${TEAM_NAME}
-        version: ${VERSION}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9101"
@@ -296,7 +295,7 @@ spec:
                 - "true"
       containers:
       - name: ${APP_NAME}-openresty
-        image: estafette/openresty-sidecar:1.13.6.1-alpine
+        image: estafette/openresty-sidecar:1.13.6.2-alpine
         imagePullPolicy: IfNotPresent
         resources:
           limits:
