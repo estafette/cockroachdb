@@ -76,5 +76,5 @@ releases:
         - gcloud config set account ${GCLOUD_SA_NAME}
         - gcloud config set project ${GCLOUD_PROJECT_NAME}
         - gcloud container clusters get-credentials ${GCLOUD_GKE_CLUSTER_NAME} --zone ${GCLOUD_GKE_ZONE}
-        - cat kubernetes.yaml | envsubst \$APP_NAME,\$NAMESPACE,\$TEAM_NAME,\$HOSTNAMES,\$COCKROACHDB_VERSION,\$REPLICAS,\$CPU_REQUEST,\$CPU_LIMIT,\$MEMORY_REQUEST,\$MEMORY_LIMIT,\$STORAGE_CLASS,\$PVC_SIZE,\$LOCALITY | kubectl apply -n cerebro -f -
+        - cat kubernetes.yaml | envsubst \$APP_NAME,\$NAMESPACE,\$TEAM_NAME,\$HOSTNAMES,\$COCKROACHDB_VERSION,\$REPLICAS,\$CPU_REQUEST,\$CPU_LIMIT,\$MEMORY_REQUEST,\$MEMORY_LIMIT,\$STORAGE_CLASS,\$PVC_SIZE,\$LOCALITY | kubectl apply -n ${NAMESPACE} -f -
         - kubectl rollout status sts/cockroachdb -n ${NAMESPACE}
