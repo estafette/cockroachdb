@@ -35,7 +35,7 @@ env:
   COCKROACH_PORT: 26257
   COCKROACH_USER: estafette.secret(O4uXorr5vFlFQoYu.QQFEtau1WrWXciu6o-YgET2MXU3OTIp9dNbsb_vAq_0=)
   COCKROACH_PASSWORD: estafette.secret(t0jR6iH0Gs9weU_X.yMqwx9wSOhELqbCoNeUO1e7--SG3jw9oOzjk8PvUltrW7UNUV_c-tF848WJrAg==)
-  COCKROACHDB_VERSION: v2.0.6
+  COCKROACHDB_VERSION: v2.1.0
   REPLICAS: 5
   CPU_REQUEST: 2000m
   CPU_LIMIT: 4000m
@@ -50,8 +50,6 @@ stages:
     image: estafette/cloud-sdk:dev
     shell: /bin/bash
     commands:
-    - apk add --update --no-cache gettext
-    - gcloud components install kubectl
     - echo "${GCLOUD_KEY_FILE}" | base64 -d > key-file.json
     - gcloud auth activate-service-account ${GCLOUD_SA_NAME} --key-file ./key-file.json
     - gcloud config set account ${GCLOUD_SA_NAME}
@@ -69,8 +67,6 @@ releases:
         image: estafette/cloud-sdk:dev
         shell: /bin/bash
         commands:
-        - apk add --update --no-cache gettext
-        - gcloud components install kubectl
         - echo "${GCLOUD_KEY_FILE}" | base64 -d > key-file.json
         - gcloud auth activate-service-account ${GCLOUD_SA_NAME} --key-file ./key-file.json
         - gcloud config set account ${GCLOUD_SA_NAME}
