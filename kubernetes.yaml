@@ -80,7 +80,6 @@ metadata:
 spec:
   serviceName: "${APP_NAME}"
   replicas: ${REPLICAS}
-  podManagementPolicy: Parallel
   updateStrategy:
     type: "RollingUpdate"
   selector:
