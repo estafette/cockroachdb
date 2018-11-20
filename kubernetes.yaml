@@ -80,6 +80,7 @@ metadata:
 spec:
   serviceName: "${APP_NAME}"
   replicas: ${REPLICAS}
+  podManagementPolicy: Parallel
   updateStrategy:
     type: "RollingUpdate"
   selector:
@@ -129,6 +130,8 @@ spec:
         env:
         - name: "COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING"
           value: "true"
+        - name: COCKROACH_CHANNEL
+          value: kubernetes-insecure
         ports:
         - containerPort: 26257
           name: grpc
@@ -145,10 +148,17 @@ spec:
           - "exec /cockroach/cockroach start --logtostderr --insecure --advertise-host $(hostname -f) --http-host 0.0.0.0 --join ${APP_NAME}-0.${APP_NAME},${APP_NAME}-1.${APP_NAME},${APP_NAME}-2.${APP_NAME} --cache=.35 --max-sql-memory=.35 --locality ${LOCALITY}"
         livenessProbe:
           httpGet:
-            path: /health
+            path: "/health"
             port: http
           initialDelaySeconds: 30
           timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: "/health?ready=1"
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 2
       # No pre-stop hook is required, a SIGTERM plus some time is all that's
       # needed for graceful shutdown of a node.
       terminationGracePeriodSeconds: 60
