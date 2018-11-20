@@ -142,12 +142,13 @@ spec:
           - "-ecx"
           # The use of qualified `hostname -f` is crucial:
           # Other nodes aren't able to look up the unqualified hostname.
-          - "exec /cockroach/cockroach start --logtostderr --insecure --advertise-host $(hostname -f) --http-host 0.0.0.0 --join ${APP_NAME}-0.${APP_NAME},${APP_NAME}-1.${APP_NAME},${APP_NAME}-2.${APP_NAME} --cache 25% --max-sql-memory 25% --locality ${LOCALITY}"
+          - "exec /cockroach/cockroach start --logtostderr --insecure --advertise-host $(hostname -f) --http-host 0.0.0.0 --join ${APP_NAME}-0.${APP_NAME},${APP_NAME}-1.${APP_NAME},${APP_NAME}-2.${APP_NAME} --cache=.25 --max-sql-memory=.25 --locality ${LOCALITY}"
         livenessProbe:
           httpGet:
             path: /health
             port: http
           initialDelaySeconds: 30
+          timeoutSeconds: 5
       # No pre-stop hook is required, a SIGTERM plus some time is all that's
       # needed for graceful shutdown of a node.
       terminationGracePeriodSeconds: 60
