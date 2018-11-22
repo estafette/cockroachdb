@@ -93,8 +93,9 @@ spec:
       annotations:
         # Enable automatic monitoring of all instances when Prometheus is running in the cluster.
         prometheus.io/scrape: "true"
-        prometheus.io/path: "_status/vars"
+        prometheus.io/path: "/_status/vars"
         prometheus.io/port: "8080"
+        prometheus.io/scheme: "http"
     spec:
       affinity:
         podAntiAffinity:
