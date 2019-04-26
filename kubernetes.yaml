@@ -256,7 +256,7 @@ spec:
   selector:
     matchLabels:
       app: ${APP_NAME}-admin
-  minAvailable: 2
+  maxUnavailable: 1
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
