@@ -21,10 +21,6 @@ env:
   NAMESPACE: estafette
   TEAM_NAME: estafette
   HOSTNAMES: estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)
-  CPU_REQUEST: 200m
-  CPU_LIMIT: 200m
-  MEMORY_REQUEST: 512Mi
-  MEMORY_LIMIT: 512Mi
   COCKROACH_DATABASE: estafette.secret(FMiqFetD_wlJM9mB.2_kprGMxMtllfDzFI-95itWfvAeb70ibG-6-CDs4P6A=)
   COCKROACH_HOST: estafette.secret(NBbU-NviD2kCo6t7.BNARNwmU-Lfa4erBVxjeRbz9c4xh9bos4UyO5eMvdQgK1JofvD9GCLDkUJEMdJbbQxbOjUnzw70fopt_mus=)
   COCKROACH_INSECURE: estafette.secret(zH4TA8KlflUEIhXA.pEC3hEnqCTPOGC8C0Z2wKHk139w=)
