@@ -82,8 +82,9 @@ metadata:
 spec:
   serviceName: "${APP_NAME}"
   replicas: ${REPLICAS}
+  podManagementPolicy: Parallel
   updateStrategy:
-    type: "RollingUpdate"
+    type: RollingUpdate
   selector:
     matchLabels:
       app: ${APP_NAME}
