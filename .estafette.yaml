@@ -21,13 +21,6 @@ env:
   NAMESPACE: estafette
   TEAM_NAME: estafette
   HOSTNAMES: estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)
-  COCKROACH_DATABASE: estafette.secret(FMiqFetD_wlJM9mB.2_kprGMxMtllfDzFI-95itWfvAeb70ibG-6-CDs4P6A=)
-  COCKROACH_HOST: estafette.secret(NBbU-NviD2kCo6t7.BNARNwmU-Lfa4erBVxjeRbz9c4xh9bos4UyO5eMvdQgK1JofvD9GCLDkUJEMdJbbQxbOjUnzw70fopt_mus=)
-  COCKROACH_INSECURE: estafette.secret(zH4TA8KlflUEIhXA.pEC3hEnqCTPOGC8C0Z2wKHk139w=)
-  COCKROACH_CERTS_DIR: /cockroach-certs
-  COCKROACH_PORT: 26257
-  COCKROACH_USER: estafette.secret(O4uXorr5vFlFQoYu.QQFEtau1WrWXciu6o-YgET2MXU3OTIp9dNbsb_vAq_0=)
-  COCKROACH_PASSWORD: estafette.secret(t0jR6iH0Gs9weU_X.yMqwx9wSOhELqbCoNeUO1e7--SG3jw9oOzjk8PvUltrW7UNUV_c-tF848WJrAg==)
   COCKROACHDB_VERSION: v19.1.0
   REPLICAS: 5
   CPU_REQUEST: 1000m
