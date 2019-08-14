@@ -211,6 +211,18 @@ spec:
           servicePort: http
 ---
 apiVersion: v1
+kind: Secret
+metadata:
+  name: ${APP_NAME}-letsencrypt-certificate
+  namespace: ${NAMESPACE}
+  labels:
+    app: ${APP_NAME}
+    team: ${TEAM_NAME}
+  annotations:
+    estafette.io/letsencrypt-certificate: "true"
+    estafette.io/letsencrypt-certificate-hostnames: "${HOSTNAMES}"
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: ${APP_NAME}-admin
@@ -226,138 +238,10 @@ spec:
   ports:
   - name: http
     port: 80
-    targetPort: http
-    protocol: TCP
-  - name: https
-    port: 443
-    targetPort: https
+    targetPort: 8080
     protocol: TCP
   selector:
-    app: ${APP_NAME}-admin
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: ${APP_NAME}-letsencrypt-certificate
-  namespace: ${NAMESPACE}
-  labels:
     app: ${APP_NAME}
-    team: ${TEAM_NAME}
-  annotations:
-    estafette.io/letsencrypt-certificate: "true"
-    estafette.io/letsencrypt-certificate-hostnames: "${HOSTNAMES}"
----
-apiVersion: policy/v1beta1
-kind: PodDisruptionBudget
-metadata:
-  name: ${APP_NAME}-admin
-  namespace: ${NAMESPACE}
-  labels:
-    app: ${APP_NAME}-admin
-    team: ${TEAM_NAME}
-spec:
-  selector:
-    matchLabels:
-      app: ${APP_NAME}-admin
-  maxUnavailable: 1
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: ${APP_NAME}-admin
-  namespace: ${NAMESPACE}
-  labels:
-    app: ${APP_NAME}-admin
-    team: ${TEAM_NAME}
-spec:
-  replicas: 3
-  strategy:
-    type: RollingUpdate
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: ${APP_NAME}-admin
-  template:
-    metadata:
-      labels:
-        app: ${APP_NAME}-admin
-        team: ${TEAM_NAME}
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9101"
-    spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - ${APP_NAME}-admin
-              topologyKey: kubernetes.io/hostname
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 10
-            preference:
-              matchExpressions:
-              - key: cloud.google.com/gke-preemptible
-                operator: In
-                values:
-                - "true"
-      containers:
-      - name: ${APP_NAME}-openresty
-        image: estafette/openresty-sidecar:1.13.6.2-alpine
-        imagePullPolicy: IfNotPresent
-        resources:
-          limits:
-            cpu: 50m
-            memory: 50Mi
-          requests:
-            cpu: 10m
-            memory: 10Mi
-        ports:
-        - name: http
-          containerPort: 80
-        - name: https
-          containerPort: 443
-        - name: nginx-liveness
-          containerPort: 82
-        - name: nginx-readiness
-          containerPort: 81
-        - name: nginx-prom
-          containerPort: 9101
-        env:
-        - name: "OFFLOAD_TO_HOST"
-          value: "${APP_NAME}-public"
-        - name: "OFFLOAD_TO_PORT"
-          value: "8080"
-        - name: "SERVICE_NAME"
-          value: "${APP_NAME}-admin"
-        - name: "NAMESPACE"
-          value: "${NAMESPACE}"
-        - name: "HEALT_CHECK_PATH"
-          value: "/health"
-        - name: "ENFORCE_HTTPS"
-          value: "false"
-        volumeMounts:
-        - name: ssl-certificate
-          mountPath: /etc/ssl/private
-        livenessProbe:
-          httpGet:
-            path: /liveness
-            port: nginx-liveness
-          initialDelaySeconds: 15
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: http
-      volumes:
-      - name: ssl-certificate
-        secret:
-          secretName: ${APP_NAME}-letsencrypt-certificate
 # ---
 # apiVersion: batch/v1
 # kind: Job
