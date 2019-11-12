@@ -2,9 +2,9 @@ builder:
   track: dev
 
 labels:
-  app: estafette-ci-cockroachdb
   app-group: estafette-ci
   team: estafette-team
+  language: helm
 
 version:
   semver:
