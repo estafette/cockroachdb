@@ -59,12 +59,12 @@ releases:
         - cat kubernetes.yaml | envsubst \$APP_NAME,\$NAMESPACE,\$TEAM_NAME,\$HOSTNAMES,\$COCKROACHDB_VERSION,\$REPLICAS,\$CPU_REQUEST,\$CPU_LIMIT,\$MEMORY_REQUEST,\$MEMORY_LIMIT,\$STORAGE_CLASS,\$PVC_SIZE,\$LOCALITY | kubectl apply -n ${NAMESPACE} -f -
         - kubectl rollout status sts/cockroachdb -n ${NAMESPACE}
 
-  tooling-with-helm:
+  tooling-with-helm-diff:
     stages:
-      install:
+      diff:
         image: estafette/helm:dev
-        action: install
-        namespace: estafette-ci-test
+        action: diff
+        namespace: estafette
         repoUrl: https://kubernetes-charts.storage.googleapis.com
         chart: cockroachdb
         version: 2.1.16
