@@ -21,7 +21,7 @@ env:
   NAMESPACE: estafette
   TEAM_NAME: estafette
   HOSTNAMES: estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)
-  COCKROACHDB_VERSION: v19.1.5
+  COCKROACHDB_VERSION: v19.2.0
   REPLICAS: 5
   CPU_REQUEST: 1000m
   CPU_LIMIT: 4000m
@@ -58,3 +58,31 @@ releases:
         - gcloud container clusters get-credentials ${GCLOUD_GKE_CLUSTER_NAME} --zone ${GCLOUD_GKE_ZONE}
         - cat kubernetes.yaml | envsubst \$APP_NAME,\$NAMESPACE,\$TEAM_NAME,\$HOSTNAMES,\$COCKROACHDB_VERSION,\$REPLICAS,\$CPU_REQUEST,\$CPU_LIMIT,\$MEMORY_REQUEST,\$MEMORY_LIMIT,\$STORAGE_CLASS,\$PVC_SIZE,\$LOCALITY | kubectl apply -n ${NAMESPACE} -f -
         - kubectl rollout status sts/cockroachdb -n ${NAMESPACE}
+
+  tooling-with-helm:
+    stages:
+      install:
+        image: estafette/helm:dev
+        action: install
+        namespace: estafette-ci-test
+        repoUrl: https://kubernetes-charts.storage.googleapis.com
+        chart: cockroachdb
+        version: 2.1.16
+        appVersion: v19.2.0
+        values: |-
+          Name: "cockroachdb"
+          ImageTag: "v19.1.5"
+          ImagePullPolicy: "IfNotPresent"
+          Replicas: 5
+          Resources:
+            limits:
+              cpu: "4"
+              memory: 12Gi
+            requests:
+              cpu: "1"
+              memory: 12Gi
+          Storage: "10Gi"
+          StorageClass: "fast"
+          CacheSize: "35%"
+          MaxSQLMemory: "35%"
+          Locality: "continent=europe,country=belgium,region=europe-west1,zone=europe-west1-c"
