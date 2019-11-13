@@ -36,8 +36,6 @@ internalHttpPort: 8080
 externalHttpPort: 8080
 httpName: http
 
-maxUnavailable: 1
-
 storage: "10Gi"
 storageClass: null
 
@@ -47,6 +45,10 @@ clusterDomain: "cluster.local"
 
 secure:
   enabled: false
+
+# poddisruptionbudget settings
+pdb:
+  maxUnavailable: 1
 
 #
 # GENERIC SETTINGS

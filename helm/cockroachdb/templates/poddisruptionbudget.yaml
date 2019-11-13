@@ -10,4 +10,4 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "cockroachdb.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-  maxUnavailable: {{ .Values.maxUnavailable }}
+  maxUnavailable: {{ .Values.pdb.maxUnavailable }}
