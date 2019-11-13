@@ -1,0 +1,13 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cockroachdb.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "cockroachdb.labels" . | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "cockroachdb.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  maxUnavailable: {{ .Values.maxUnavailable }}
