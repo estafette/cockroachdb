@@ -55,7 +55,7 @@ stages:
       package-helm-chart:
         image: extensions/helm:dev
         action: package
-        appVersion: ${COCKROACHDB_VERSION}
+        appVersion: v19.2.0
 
   test-helm-chart:
     services:
