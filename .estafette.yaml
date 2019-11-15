@@ -64,7 +64,6 @@ stages:
       readiness:
         path: /kubernetes-ready
         port: 10080
-        timeoutSeconds: 180
     image: extensions/helm:dev
     action: test
     tillerless: true
