@@ -24,7 +24,7 @@ env:
   NAMESPACE: estafette
   TEAM_NAME: estafette
   HOSTNAMES: estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)
-  COCKROACHDB_VERSION: v19.2.0
+  COCKROACHDB_VERSION: v19.2.1
   REPLICAS: 5
   CPU_REQUEST: 1000m
   CPU_LIMIT: 4000m
@@ -55,7 +55,7 @@ stages:
       package-helm-chart:
         image: extensions/helm:dev
         action: package
-        appVersion: v19.2.0
+        appVersion: v19.2.1
 
   test-helm-chart:
     services:
@@ -137,7 +137,7 @@ releases:
         repoUrl: https://kubernetes-charts.storage.googleapis.com
         chart: cockroachdb
         version: 2.1.16
-        appVersion: v19.2.0
+        appVersion: v19.2.1
         values: |-
           Name: "cockroachdb"
           ImageTag: "v19.1.5"
