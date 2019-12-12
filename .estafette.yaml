@@ -66,10 +66,9 @@ stages:
         port: 10080
     image: extensions/helm:dev
     action: test
-    tillerless: true
     values: |-
-      replicaCount: 1
-      storage: "1Gi"
+      replicaCount: 2
+      storage: "100Mi"
       secret:
         valuesAreBase64Encoded: true
         # generated with
