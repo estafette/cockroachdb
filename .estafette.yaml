@@ -24,7 +24,7 @@ env:
   NAMESPACE: estafette
   TEAM_NAME: estafette
   HOSTNAMES: estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)
-  COCKROACHDB_VERSION: v19.2.1
+  COCKROACHDB_VERSION: v19.2.2
   REPLICAS: 5
   CPU_REQUEST: 1000m
   CPU_LIMIT: 4000m
