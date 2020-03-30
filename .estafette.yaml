@@ -24,12 +24,12 @@ env:
   NAMESPACE: estafette
   TEAM_NAME: estafette
   HOSTNAMES: estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)
-  COCKROACHDB_VERSION: v19.2.4
-  REPLICAS: 5
-  CPU_REQUEST: 1000m
+  COCKROACHDB_VERSION: v19.2.5
+  REPLICAS: 7
+  CPU_REQUEST: 2000m
   CPU_LIMIT: 4000m
-  MEMORY_REQUEST: 12Gi
-  MEMORY_LIMIT: 12Gi
+  MEMORY_REQUEST: 18Gi
+  MEMORY_LIMIT: 18Gi
   STORAGE_CLASS: fast
   PVC_SIZE: 10Gi
   LOCALITY: continent=europe,country=belgium,region=europe-west1,zone=europe-west1-c
