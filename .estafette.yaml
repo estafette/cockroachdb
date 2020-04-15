@@ -142,6 +142,9 @@ releases:
         image: estafette/cloud-sdk:dev
         shell: /bin/bash
         env:
+          GCLOUD_PROJECT_NAME: estafette.secret(aKoOl5TaFJbgrIYr.vdFdrXilKZRMgWT3p0zagK72eQ5viY6wSbie6yIJ9uDHYZdAh8ON.rtdGqWSpYNpGnz_zsl3Pkq6vYQ46h4PC7RLTsat_KbrsDY5BMbyRUQbqRm4QWmCF)
+          GCLOUD_GKE_CLUSTER_NAME: estafette.secret(iiW4Zp5TMtMyJU9C.sTxtnzP8kzqphxdo7RqtNOay0qXlo2TXJo9EHw6AKcFM.ojp2my_w2nSjmUxs-Au4Juauk9tli39D4ipSAc9uYxBfcehp4y9Ndsxedik00KHf)
+          GCLOUD_GKE_REGION: estafette.secret(ho1G1LrdxTdBJggr.MgB_SaOLqm9xoDclRH4ebViZLsP2ix5ksr1_9Q==.MBx5TqaMqXt7vmxxllg2t3LWbCpmFQImR68-I5K9UZCI7tIJHSrXnR2RNOOsAAHK)
           NAMESPACE: estafette-ci
           REPLICAS: 3
           ENABLE_CLOUDFLARE_DNS: false
@@ -153,7 +156,7 @@ releases:
         - gcloud auth activate-service-account ${GCLOUD_SA_NAME} --key-file ./key-file.json
         - gcloud config set account ${GCLOUD_SA_NAME}
         - gcloud config set project ${GCLOUD_PROJECT_NAME}
-        - gcloud container clusters get-credentials ${GCLOUD_GKE_CLUSTER_NAME} --zone ${GCLOUD_GKE_ZONE}
+        - gcloud container clusters get-credentials ${GCLOUD_GKE_CLUSTER_NAME} --region ${GCLOUD_GKE_REGION}
         - cat kubernetes.yaml | envsubst \$APP_NAME,\$NAMESPACE,\$TEAM_NAME,\$HOSTNAMES,\$ENABLE_CLOUDFLARE_DNS,\$JOIN_REMOTE_HOSTS,\$COCKROACHDB_VERSION,\$REPLICAS,\$CPU_REQUEST,\$CPU_LIMIT,\$MEMORY_REQUEST,\$MEMORY_LIMIT,\$STORAGE_CLASS,\$PVC_SIZE,\$LOCALITY | kubectl apply -n ${NAMESPACE} -f -
         - kubectl rollout status sts/cockroachdb -n ${NAMESPACE}
 
