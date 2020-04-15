@@ -24,6 +24,8 @@ env:
   NAMESPACE: estafette
   TEAM_NAME: estafette
   HOSTNAMES: estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)
+  ENABLE_CLOUDFLARE_DNS: true
+  JOIN_REMOTE_HOSTS: cockroachdb-0.cockroachdb.estafette.svc.cluster.local,cockroachdb-1.cockroachdb.estafette.svc.cluster.local
   COCKROACHDB_VERSION: v19.2.6
   REPLICAS: 5
   CPU_REQUEST: 2000m
@@ -97,19 +99,19 @@ stages:
       status == 'failed'
 
 releases:
-  release:
-    stages:
-      clone-charts-repo:
-        image: extensions/git-clone:dev
-        repo: helm-charts
-        branch: master
+  # release:
+  #   stages:
+  #     clone-charts-repo:
+  #       image: extensions/git-clone:dev
+  #       repo: helm-charts
+  #       branch: master
 
-      purge-prerelease-helm-charts:
-        image: extensions/helm:dev
-        action: purge
+  #     purge-prerelease-helm-charts:
+  #       image: extensions/helm:dev
+  #       action: purge
 
-      create-github-release:
-        image: extensions/github-release:dev
+  #     create-github-release:
+  #       image: extensions/github-release:dev
 
   tooling:
     clone: true
@@ -117,6 +119,13 @@ releases:
       deploy:
         image: estafette/cloud-sdk:dev
         shell: /bin/bash
+        env:
+          NAMESPACE: estafette
+          REPLICAS: 5
+          ENABLE_CLOUDFLARE_DNS: true
+          JOIN_REMOTE_HOSTS: cockroachdb-0.cockroachdb.estafette-ci.svc.cluster.local,cockroachdb-1.cockroachdb.estafette-ci.svc.cluster.local
+          PVC_SIZE: 10Gi
+          LOCALITY: continent=europe,country=belgium,region=europe-west1,zone=europe-west1-c
         commands:
         - echo "${GCLOUD_KEY_FILE}" | base64 -d > key-file.json
         - gcloud auth activate-service-account ${GCLOUD_SA_NAME} --key-file ./key-file.json
@@ -126,31 +135,53 @@ releases:
         - cat kubernetes.yaml | envsubst \$APP_NAME,\$NAMESPACE,\$TEAM_NAME,\$HOSTNAMES,\$COCKROACHDB_VERSION,\$REPLICAS,\$CPU_REQUEST,\$CPU_LIMIT,\$MEMORY_REQUEST,\$MEMORY_LIMIT,\$STORAGE_CLASS,\$PVC_SIZE,\$LOCALITY | kubectl apply -n ${NAMESPACE} -f -
         - kubectl rollout status sts/cockroachdb -n ${NAMESPACE}
 
-  tooling-with-helm-diff:
+  tooling-estafette:
+    clone: true
     stages:
-      diff:
-        image: extensions/helm:dev
-        credentials: gke-tooling
-        action: diff
-        namespace: estafette
-        repoUrl: https://kubernetes-charts.storage.googleapis.com
-        chart: cockroachdb
-        version: 2.1.16
-        appVersion: v19.2.1
-        values: |-
-          Name: "cockroachdb"
-          ImageTag: "v19.1.5"
-          ImagePullPolicy: "IfNotPresent"
-          Replicas: 5
-          Resources:
-            limits:
-              cpu: "4"
-              memory: 12Gi
-            requests:
-              cpu: "1"
-              memory: 12Gi
-          Storage: "10Gi"
-          StorageClass: "fast"
-          CacheSize: "35%"
-          MaxSQLMemory: "35%"
-          Locality: "continent=europe,country=belgium,region=europe-west1,zone=europe-west1-c"
+      deploy:
+        image: estafette/cloud-sdk:dev
+        shell: /bin/bash
+        env:
+          NAMESPACE: estafette-ci
+          REPLICAS: 3
+          ENABLE_CLOUDFLARE_DNS: false
+          JOIN_REMOTE_HOSTS: cockroachdb-0.cockroachdb.estafette.svc.cluster.local,cockroachdb-1.cockroachdb.estafette.svc.cluster.local
+          PVC_SIZE: 50Gi
+          LOCALITY: continent=europe,country=belgium,region=europe-west1
+        commands:
+        - echo "${GCLOUD_KEY_FILE}" | base64 -d > key-file.json
+        - gcloud auth activate-service-account ${GCLOUD_SA_NAME} --key-file ./key-file.json
+        - gcloud config set account ${GCLOUD_SA_NAME}
+        - gcloud config set project ${GCLOUD_PROJECT_NAME}
+        - gcloud container clusters get-credentials ${GCLOUD_GKE_CLUSTER_NAME} --zone ${GCLOUD_GKE_ZONE}
+        - cat kubernetes.yaml | envsubst \$APP_NAME,\$NAMESPACE,\$TEAM_NAME,\$HOSTNAMES,\$COCKROACHDB_VERSION,\$REPLICAS,\$CPU_REQUEST,\$CPU_LIMIT,\$MEMORY_REQUEST,\$MEMORY_LIMIT,\$STORAGE_CLASS,\$PVC_SIZE,\$LOCALITY | kubectl apply -n ${NAMESPACE} -f -
+        - kubectl rollout status sts/cockroachdb -n ${NAMESPACE}
+
+  # tooling-with-helm-diff:
+  #   stages:
+  #     diff:
+  #       image: extensions/helm:dev
+  #       credentials: gke-tooling
+  #       action: diff
+  #       namespace: estafette
+  #       repoUrl: https://kubernetes-charts.storage.googleapis.com
+  #       chart: cockroachdb
+  #       version: 2.1.16
+  #       appVersion: v19.2.1
+  #       values: |-
+  #         Name: "cockroachdb"
+  #         ImageTag: "v19.1.5"
+  #         ImagePullPolicy: "IfNotPresent"
+  #         Replicas: 5
+  #         Resources:
+  #           limits:
+  #             cpu: "4"
+  #             memory: 12Gi
+  #           requests:
+  #             cpu: "1"
+  #             memory: 12Gi
+  #         Storage: "10Gi"
+  #         StorageClass: "fast"
+  #         CacheSize: "35%"
+  #         MaxSQLMemory: "35%"
+  #         Locality: "continent=europe,country=belgium,region=europe-west1,zone=europe-west1-c"

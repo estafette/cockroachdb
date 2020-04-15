@@ -194,7 +194,7 @@ spec:
           - "-ecx"
           # The use of qualified `hostname -f` is crucial:
           # Other nodes aren't able to look up the unqualified hostname.
-          - "exec /cockroach/cockroach start --logtostderr --insecure --advertise-host $(hostname -f) --http-host 0.0.0.0 --join ${APP_NAME}-0.${APP_NAME},${APP_NAME}-1.${APP_NAME},${APP_NAME}-2.${APP_NAME} --cache=.35 --max-sql-memory=.35 --locality ${LOCALITY}"
+          - "exec /cockroach/cockroach start --logtostderr --insecure --advertise-host $(hostname -f) --http-host 0.0.0.0 --join ${APP_NAME}-0.${APP_NAME},${APP_NAME}-1.${APP_NAME},${APP_NAME}-2.${APP_NAME},${JOIN_REMOTE_HOSTS} --cache=.35 --max-sql-memory=.35 --locality ${LOCALITY}"
         livenessProbe:
           httpGet:
             path: "/health"
@@ -241,7 +241,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "gce"
     kubernetes.io/ingress.allow-http: "false"
-    estafette.io/cloudflare-dns: "true"
+    estafette.io/cloudflare-dns: "${ENABLE_CLOUDFLARE_DNS}"
     estafette.io/cloudflare-proxy: "true"
     estafette.io/cloudflare-hostnames: "${HOSTNAMES}"
 spec:
