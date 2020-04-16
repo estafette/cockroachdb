@@ -121,7 +121,7 @@ releases:
         shell: /bin/bash
         env:
           NAMESPACE: estafette
-          REPLICAS: 5
+          REPLICAS: 3
           ENABLE_CLOUDFLARE_DNS: true
           JOIN_REMOTE_HOSTS: cockroachdb-0.cockroachdb.estafette-ci.svc.cluster.local,cockroachdb-1.cockroachdb.estafette-ci.svc.cluster.local
           PVC_SIZE: 10Gi
