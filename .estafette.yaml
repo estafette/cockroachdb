@@ -3,6 +3,7 @@ builder:
 
 labels:
   app-group: estafette-ci
+  type: storage
   team: estafette-team
   language: helm
 
