@@ -188,22 +188,45 @@ spec:
         - name: ${APP_NAME}-datadir
           mountPath: /cockroach/cockroach-data
         - name: certs
-          mountPath: /cockroach-certs/
-        command:
-          - "/bin/bash"
-          - "-ecx"
+          mountPath: /cockroach/cockroach-certs/
+        args:
+          - shell
+          - -ecx
           # The use of qualified `hostname -f` is crucial:
           # Other nodes aren't able to look up the unqualified hostname.
-          - "exec /cockroach/cockroach start --logtostderr --insecure --advertise-host $(hostname -f) --http-host 0.0.0.0 --join ${APP_NAME}-0.${APP_NAME},${APP_NAME}-1.${APP_NAME},${APP_NAME}-2.${APP_NAME}${JOIN_REMOTE_HOSTS} --cache=.35 --max-sql-memory=.35 --locality ${LOCALITY}"
+          #
+          # `--join` CLI flag is hardcoded to exactly 3 Pods, because:
+          # 1. Having `--join` value depending on `statefulset.replicas`
+          #    will trigger undesired restart of existing Pods when
+          #    StatefulSet is scaled up/down. We want to scale without
+          #    restarting existing Pods.
+          # 2. At least one Pod in `--join` is enough to successfully
+          #    join CockroachDB cluster and gossip with all other existing
+          #    Pods, even if there are 3 or more Pods.
+          # 3. It's harmless for `--join` to have 3 Pods even for 1-Pod
+          #    clusters, while it gives us opportunity to scale up even if
+          #    some Pods of existing cluster are down (for whatever reason).
+          # See details explained here:
+          # https://github.com/helm/charts/pull/18993#issuecomment-558795102
+          - >-
+            exec /cockroach/cockroach
+            start --join=${APP_NAME}-0.${APP_NAME},${APP_NAME}-1.${APP_NAME},${APP_NAME}-2.${APP_NAME}${JOIN_REMOTE_HOSTS}
+            --advertise-host=$(hostname -f)
+            --logtostderr
+            --insecure
+            --http-host 0.0.0.0
+            --cache=.35
+            --max-sql-memory=.35
+            --locality ${LOCALITY}
         livenessProbe:
           httpGet:
-            path: "/health"
+            path: /health
             port: http
           initialDelaySeconds: 30
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
-            path: "/health?ready=1"
+            path: /health?ready=1
             port: http
           initialDelaySeconds: 10
           periodSeconds: 5
