@@ -52,6 +52,7 @@ Now that the cluster is up and running we want to create a user for ourselve to 
 In order to create users and grant roles you need to run a client pod with the _root_ user. Do so by running:
 
 ```bash
+kubectl delete po cockroachdb-client-secure -n <namespace> --ignore-not-found
 cat secure-client.yaml | \
 APP_NAME=cockroachdb NAMESPACE=<namespace> USER=root envsubst \$APP_NAME,\$NAMESPACE,\$USER | \
 kubectl apply -f - -n <namespace>
