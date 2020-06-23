@@ -308,6 +308,7 @@ metadata:
     prometheus.io/probe-path: "/health"
     beta.cloud.google.com/backend-config: '{"default": "${APP_NAME}-admin"}'
     service.alpha.kubernetes.io/app-protocols: '{"https":"HTTPS"}'
+    cloud.google.com/neg: '{"ingress": true}'
 spec:
   type: NodePort
   ports:
