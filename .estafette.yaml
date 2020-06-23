@@ -28,13 +28,13 @@ env:
   ENABLE_CLOUDFLARE_DNS: true
   JOIN_REMOTE_HOSTS: ',cockroachdb-0.cockroachdb.estafette.svc.cluster.local,cockroachdb-1.cockroachdb.estafette.svc.cluster.local'
   COCKROACHDB_VERSION: v20.1.2
-  REPLICAS: 5
+  REPLICAS: 3
   CPU_REQUEST: 2000m
   CPU_LIMIT: 4000m
   MEMORY_REQUEST: 18Gi
   MEMORY_LIMIT: 18Gi
   STORAGE_CLASS: fast
-  PVC_SIZE: 10Gi
+  PVC_SIZE: 50Gi
   LOCALITY: continent=europe,country=belgium,region=europe-west1,zone=europe-west1-c
   IAP_OAUTH_CLIENT_ID: estafette.secret(rJjOuzaXarfMhp9j.0nfQMauGykd-Cfu6eNBJW99Toszx6uf1tzw_6q62kmZ6mWceXqA1KPgXhO-SzynibLG0hKjCKVrHahdAM36ssjWWw9-z7sKOE36MfaejL48VZru13LXNtrpivYErUdk5f9VUWxWt_dLpwj6gtJZf9A==.-0rtIJCesV1cDp2oReBPCPZw7tGT0cL6v30Vvq6Zx3bgmKrIPeDu2SXucSLJr8v7)
   IAP_OAUTH_CLIENT_SECRET: estafette.secret(iPS8QdKCO5TGlWfo.lEwkMhvKFokp9ypzY3cN2CDa4y4X5Gu-Xk4IqrmYImJXCUwzfNVmhDaYGHlhIPyc.qXI_ayP_XKAk8XVmQ1U9jhfm-yBa6zzvVlItoJS2DHKhbPmvGJjegDrfFO8dkU2z)

@@ -5,7 +5,6 @@ metadata:
   namespace: ${NAMESPACE}
   labels:
     app: ${APP_NAME}-client
-    team: estafette
 spec:
   serviceAccountName: ${APP_NAME}
   initContainers:
@@ -42,7 +41,7 @@ spec:
     image: cockroachdb/cockroach:v20.1.2
     imagePullPolicy: IfNotPresent
     volumeMounts:
-    - name: client-certs
+    - name: certs
       mountPath: /cockroach-certs
     # Keep a pod open indefinitely so kubectl exec can be used to get a shell to it
     # and run cockroach client commands, such as cockroach sql, cockroach node status, etc.
@@ -52,5 +51,5 @@ spec:
   # This pod isn't doing anything important, so don't bother waiting to terminate it.
   terminationGracePeriodSeconds: 0
   volumes:
-  - name: client-certs
+  - name: certs
     emptyDir: {}
