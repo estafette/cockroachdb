@@ -19,7 +19,9 @@ export STORAGE_CLASS=fast
 export PVC_SIZE=50Gi
 export LOCALITY=continent=europe,country=belgium,region=europe-west1,zone=europe-west1-c
 
-cat kubernetes.yaml | envsubst \$APP_NAME,\$NAMESPACE,\$TEAM_NAME,\$HOSTNAMES,\$COCKROACHDB_VERSION,\$REPLICAS,\$CPU_REQUEST,\$CPU_LIMIT,\$MEMORY_REQUEST,\$MEMORY_LIMIT,\$STORAGE_CLASS,\$PVC_SIZE,\$LOCALITY | kubectl apply -f -
+cat kubernetes.yaml | envsubst \$APP_NAME,\$NAMESPACE,\$TEAM_NAME,\$HOSTNAMES,\
+\$COCKROACHDB_VERSION,\$REPLICAS,\$CPU_REQUEST,\$CPU_LIMIT,\$MEMORY_REQUEST,\
+\$MEMORY_LIMIT,\$STORAGE_CLASS,\$PVC_SIZE,\$LOCALITY | kubectl apply -f -
 ```
 
 For each pod of the statefulset starting up it will create a _certificate signing request_ (CSR) in Kubernetes, which you'll have to approve in order for the _statefulset_ to complete startup:
@@ -51,7 +53,7 @@ In order to create users and grant roles you need to run a client pod with the _
 
 ```bash
 cat secure-client.yaml | \
-APP_NAME=cockroachdb NAMESPACE=<namespace> USER=root envsubst \$APP_NAME,\$NAMESPACE,\$USER |
+APP_NAME=cockroachdb NAMESPACE=<namespace> USER=root envsubst \$APP_NAME,\$NAMESPACE,\$USER | \
 kubectl apply -f - -n <namespace>
 ```
 
@@ -72,7 +74,8 @@ kubectl certificate approve <namespace>.client.root
 You can then _exec_ into the pod with:
 
 ```bash
-kubectl exec cockroachdb-client-secure -n <namespace> -ti -- /cockroach/cockroach sql --certs-dir=/cockroach-certs/ --host cockroachdb-public --database <database>
+kubectl exec cockroachdb-client-secure -n <namespace> -ti -- /cockroach/cockroach sql \
+--certs-dir=/cockroach-certs/ --host cockroachdb-public --database <database>
 ```
 
 ### Create admin users
@@ -136,7 +139,7 @@ For the application user to securely connect to the cluster you'll have to creat
 ```bash
 kubectl delete job cockroachdb-client-cert-init-for-user -n <namespace> --ignore-not-found
 cat init-client-secret.yaml | \
-APP_NAME=cockroachdb NAMESPACE=<namespace> USER=<user> envsubst \$APP_NAME,\$NAMESPACE,\$USER |
+APP_NAME=cockroachdb NAMESPACE=<namespace> USER=<user> envsubst \$APP_NAME,\$NAMESPACE,\$USER | \
 kubectl apply -f - -n <namespace>
 ```
 
