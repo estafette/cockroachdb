@@ -84,7 +84,7 @@ spec:
       app: ${APP_NAME}
   maxUnavailable: 1
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: ${APP_NAME}
@@ -255,7 +255,7 @@ spec:
         requests:
           storage: ${PVC_SIZE}
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: ${APP_NAME}
@@ -267,7 +267,7 @@ metadata:
     kubernetes.io/ingress.class: "gce"
     kubernetes.io/ingress.allow-http: "false"
     estafette.io/cloudflare-dns: "${ENABLE_CLOUDFLARE_DNS}"
-    estafette.io/cloudflare-proxy: "true"
+    estafette.io/cloudflare-proxy: "false"
     estafette.io/cloudflare-hostnames: "${HOSTNAMES}"
 spec:
   tls:
