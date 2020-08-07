@@ -27,7 +27,7 @@ env:
   HOSTNAMES: estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)
   ENABLE_CLOUDFLARE_DNS: true
   JOIN_REMOTE_HOSTS: ',cockroachdb-0.cockroachdb.estafette.svc.cluster.local,cockroachdb-1.cockroachdb.estafette.svc.cluster.local'
-  COCKROACHDB_VERSION: v20.1.3
+  COCKROACHDB_VERSION: v20.1.4
   REPLICAS: 3
   CPU_REQUEST: 2000m
   CPU_LIMIT: 4000m
