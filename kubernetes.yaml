@@ -109,6 +109,11 @@ spec:
         prometheus.io/port: "8080"
         prometheus.io/scheme: "http"
     spec:
+      tolerations:
+      - effect: NoSchedule
+        key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
