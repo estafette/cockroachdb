@@ -29,10 +29,9 @@ env:
   JOIN_REMOTE_HOSTS: ',cockroachdb-0.cockroachdb.estafette.svc.cluster.local,cockroachdb-1.cockroachdb.estafette.svc.cluster.local'
   COCKROACHDB_VERSION: v20.2.2
   REPLICAS: 3
-  CPU_REQUEST: 2000m
-  CPU_LIMIT: 4000m
-  MEMORY_REQUEST: 18Gi
-  MEMORY_LIMIT: 18Gi
+  CPU_REQUEST: 1000m
+  MEMORY_REQUEST: 12Gi
+  MEMORY_LIMIT: 12Gi
   STORAGE_CLASS: fast
   PVC_SIZE: 50Gi
   LOCALITY: continent=europe,country=belgium,region=europe-west1,zone=europe-west1-c
