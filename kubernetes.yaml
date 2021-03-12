@@ -11,6 +11,9 @@ metadata:
   labels:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: cockroachdb
 ---
 apiVersion: v1
 kind: Service
@@ -22,7 +25,11 @@ metadata:
   labels:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: cockroachdb
 spec:
+  type: NodePort
   ports:
   # The main port, served by gRPC, serves Postgres-flavor SQL, internode
   # traffic and the cli.
@@ -48,6 +55,9 @@ metadata:
   labels:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: cockroachdb
   annotations:
     # Use this annotation in addition to the actual publishNotReadyAddresses
     # field below because the annotation will stop being respected soon but the
@@ -78,6 +88,9 @@ metadata:
   labels:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: cockroachdb
 spec:
   selector:
     matchLabels:
@@ -88,6 +101,12 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: ${APP_NAME}
+  labels:
+    app: ${APP_NAME}
+    team: ${TEAM_NAME}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: cockroachdb
 spec:
   serviceName: "${APP_NAME}"
   replicas: ${REPLICAS}
@@ -267,6 +286,9 @@ metadata:
   labels:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: cockroachdb
   annotations:
     kubernetes.io/ingress.class: "gce"
     kubernetes.io/ingress.allow-http: "false"
