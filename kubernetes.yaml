@@ -14,6 +14,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
 ---
 apiVersion: v1
 kind: Service
@@ -28,6 +29,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
 spec:
   type: NodePort
   ports:
@@ -58,6 +60,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
   annotations:
     # Use this annotation in addition to the actual publishNotReadyAddresses
     # field below because the annotation will stop being respected soon but the
@@ -91,6 +94,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
 spec:
   selector:
     matchLabels:
@@ -107,6 +111,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
 spec:
   serviceName: "${APP_NAME}"
   replicas: ${REPLICAS}
@@ -289,6 +294,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
   annotations:
     kubernetes.io/ingress.class: "gce"
     kubernetes.io/ingress.allow-http: "false"
