@@ -86,11 +86,13 @@ releases:
         - kubectl rollout status sts/cockroachdb -n ${NAMESPACE}
 
   tooling-estafette-official-helm-chart:
+    actions:
+    - name: diff
+    - name: install
     stages:
-      diff:
+      deploy:
         image: extensions/helm:dev
         credentials: gke-tooling-estafette
-        action: diff
         repoUrl: https://charts.cockroachdb.com/
         chart: cockroachdb
         version: 5.0.5
@@ -98,8 +100,6 @@ releases:
         release: cockroachdb-via-helm
         values: |-
           conf:
-            cache: 35%
-            max-sql-memory: 35%
             locality: continent=europe,country=belgium,region=europe-west1
             join:
             - cockroachdb-0.cockroachdb.estafette-ci.svc.cluster.local
