@@ -59,14 +59,13 @@ metadata:
     team: ${TEAM_NAME}
     app.kubernetes.io/managed-by: Helm
   annotations:
-    meta.helm.sh/release-name: cockroachdb
-    meta.helm.sh/release-namespace: estafette-ci
-  annotations:
     # Use this annotation in addition to the actual publishNotReadyAddresses
     # field below because the annotation will stop being respected soon but the
     # field is broken in some versions of Kubernetes:
     # https://github.com/kubernetes/kubernetes/issues/58662
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+    meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
 spec:
   ports:
   - port: 26257
