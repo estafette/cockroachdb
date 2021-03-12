@@ -95,16 +95,16 @@ releases:
         chart: cockroachdb
         version: 5.0.5
         namespace: estafette-ci
-        release: cockroachdb
+        release: cockroachdb-via-helm
         values: |-
-          labels:
-            app: cockroachdb
-            team: estafette
-          clusterDomain: cluster.local
           conf:
             cache: 35%
             max-sql-memory: 35%
             locality: continent=europe,country=belgium,region=europe-west1
+            join:
+            - cockroachdb-0.cockroachdb.estafette-ci.svc.cluster.local
+            - cockroachdb-1.cockroachdb.estafette-ci.svc.cluster.local
+            - cockroachdb-2.cockroachdb.estafette-ci.svc.cluster.local
           statefulset:
             annotations:
               prometheus.io/scrape: "true"
@@ -145,7 +145,7 @@ releases:
                 service.alpha.kubernetes.io/app-protocols: '{"https":"HTTPS"}'
                 cloud.google.com/neg: '{"ingress": true}'
           ingress:
-            enabled: true
+            enabled: false
             annotations:
               kubernetes.io/ingress.class: "gce"
               kubernetes.io/ingress.allow-http: "false"
