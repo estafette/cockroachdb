@@ -135,6 +135,8 @@ releases:
               type: hard
           tls:
             enabled: true
+            serviceAccount:
+              name: cockroachdb
           # service:
           #   public:
           #     type: NodePort
