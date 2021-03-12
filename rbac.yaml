@@ -11,6 +11,10 @@ metadata:
   labels:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
 rules:
 - apiGroups:
   - ""
@@ -27,6 +31,10 @@ metadata:
   labels:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
 rules:
 - apiGroups:
   - certificates.k8s.io
@@ -45,6 +53,10 @@ metadata:
   labels:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -61,6 +73,10 @@ metadata:
   labels:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: cockroachdb
+    meta.helm.sh/release-namespace: estafette-ci
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
