@@ -84,3 +84,72 @@ releases:
         - gcloud container clusters get-credentials ${GCLOUD_GKE_CLUSTER_NAME} --region ${GCLOUD_GKE_REGION}
         - cat kubernetes.yaml | envsubst \$APP_NAME,\$NAMESPACE,\$TEAM_NAME,\$HOSTNAMES,\$ENABLE_CLOUDFLARE_DNS,\$JOIN_REMOTE_HOSTS,\$COCKROACHDB_VERSION,\$REPLICAS,\$CPU_REQUEST,\$CPU_LIMIT,\$MEMORY_REQUEST,\$MEMORY_LIMIT,\$STORAGE_CLASS,\$PVC_SIZE,\$LOCALITY,\$IAP_OAUTH_CLIENT_ID,\$IAP_OAUTH_CLIENT_SECRET | kubectl apply -n ${NAMESPACE} -f -
         - kubectl rollout status sts/cockroachdb -n ${NAMESPACE}
+
+  tooling-estafette-official-helm-chart:
+    stages:
+      diff:
+        image: extensions/helm:dev
+        action: diff
+        repoUrl: https://charts.cockroachdb.com/
+        chart: cockroachdb
+        version: 5.0.5
+        namespace: estafette-ci
+        release: cockroachdb
+        values: |-
+          labels:
+            app: cockroachdb
+            team: estafette
+          clusterDomain: cluster.local
+          conf:
+            cache: 35%
+            max-sql-memory: 35%
+            locality: continent=europe,country=belgium,region=europe-west1
+          statefulset:
+            annotations:
+              prometheus.io/scrape: "true"
+              prometheus.io/path: "/_status/vars"
+              prometheus.io/port: "8080"
+              prometheus.io/scheme: "http"
+            resources:
+              requests:
+                cpu: 1000m
+                memory: 12Gi
+              limits:
+                memory: 12Gi
+            tolerations:
+            - effect: NoSchedule
+              key: cloud.google.com/gke-preemptible
+              operator: Equal
+              value: "true"
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 10
+                preference:
+                  matchExpressions:
+                  - key: cloud.google.com/gke-preemptible
+                    operator: In
+                    values:
+                    - "true"
+            podAntiAffinity:
+              type: hard
+          tls:
+            enabled: true
+          ingress:
+            enabled: true
+            annotations:
+              kubernetes.io/ingress.class: "gce"
+              kubernetes.io/ingress.allow-http: "false"
+              estafette.io/cloudflare-dns: "true"
+              estafette.io/cloudflare-proxy: "false"
+              estafette.io/cloudflare-hostnames: "estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)"
+            paths: ['/*']
+            hosts:
+            - estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)
+            tls:
+            - hosts: [estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)]
+              secretName: cockroachdb-letsencrypt-certificate
+          storage:
+            persistentVolume:
+              enabled: true
+              size: 50Gi
+              storageClass: fast
