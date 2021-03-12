@@ -89,6 +89,7 @@ releases:
     stages:
       diff:
         image: extensions/helm:dev
+        credentials: gke-tooling-estafette
         action: diff
         repoUrl: https://charts.cockroachdb.com/
         chart: cockroachdb
