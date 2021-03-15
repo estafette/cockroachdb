@@ -38,6 +38,11 @@ releases:
         release: cockroachdb
         timeout: 300s
         values: |-
+          image:
+            credentials:
+              registry: docker.io
+              username: estafette.secret(mRAxkLM78PZ6pMrO.Y0-dvbf8RCm-snraQD_6p-_wNmQETXO4vhdk35DqEQ==.cFSIo6vmCSOzqjzTVy7pu6zX-oz-bF5AokZ_zJv84DdV-B8TQc5R-qEbRaH7YnWm)
+              password: estafette.secret(fZUqRMtSTKYxBPtc.0qJhv0XK_WLTxlD4xZwDB7j7mzh891frdGGiw-v6Lzly1tAgDch_UDCizq7BQoKy4YSGPg==.0a92tQHL4mORk0mog8VWUOi_wmU3rVulL3X4x7CkeT1UZduJ6MnFF4z1lNwk773H)
           conf:
             locality: continent=europe,country=belgium,region=europe-west1
           statefulset:
