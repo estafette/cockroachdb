@@ -16,7 +16,7 @@ spec:
   # In addition to the client certificate and key, the init-certs entrypoint will symlink
   # the cluster CA to the certs directory.
   - name: init-certs
-    image: cockroachdb/cockroach-k8s-request-cert:0.4
+    image: cockroachdb/cockroach-k8s-request-cert:latest
     imagePullPolicy: IfNotPresent
     command:
       - /bin/ash
@@ -38,7 +38,7 @@ spec:
         mountPath: /cockroach-certs/
   containers:
   - name: cockroachdb-client
-    image: cockroachdb/cockroach:v20.1.2
+    image: cockroachdb/cockroach:latest
     imagePullPolicy: IfNotPresent
     volumeMounts:
     - name: certs

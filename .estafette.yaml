@@ -103,6 +103,7 @@ releases:
         version: 5.0.5
         namespace: estafette-ci
         release: cockroachdb
+        timeout: 300s
         values: |-
           conf:
             locality: continent=europe,country=belgium,region=europe-west1
@@ -182,6 +183,7 @@ releases:
         version: 5.0.5
         namespace: estafette-ci
         release: cockroachdb-via-helm
+        timeout: 300s
         values: |-
           conf:
             locality: continent=europe,country=belgium,region=europe-west1
