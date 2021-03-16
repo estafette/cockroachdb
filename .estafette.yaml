@@ -53,10 +53,10 @@ releases:
               prometheus.io/scheme: "http"
             resources:
               requests:
-                cpu: 1000m
-                memory: 12Gi
+                cpu: 500m
+                memory: 8Gi
               limits:
-                memory: 12Gi
+                memory: 8Gi
             tolerations:
             - effect: NoSchedule
               key: cloud.google.com/gke-preemptible
