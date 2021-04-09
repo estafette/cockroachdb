@@ -33,7 +33,7 @@ releases:
         image: extensions/helm:dev
         repoUrl: https://charts.cockroachdb.com/
         chart: cockroachdb
-        version: 5.0.7
+        version: 5.0.8
         namespace: estafette-ci
         release: cockroachdb
         timeout: 300s
@@ -103,8 +103,3 @@ releases:
               enabled: true
               size: 50Gi
               storageClass: fast
-          init:
-            annotations:
-              helm.sh/hook: post-install,post-upgrade
-              # This will delete job after succeeded
-              helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
