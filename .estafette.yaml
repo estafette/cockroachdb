@@ -97,7 +97,7 @@ releases:
             - estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)
             tls:
             - hosts: [estafette.secret(0JGttv0haO1F4r_v.12nJe8twdMf_pVBBmzjsEAPrc5zYy2MXR74_hLt5-Oq5MyRq1MTGAZbb9H6bdpfd)]
-              secretName: cockroachdb-letsencrypt-certificate
+              secretName: estafette.secret(OnoVr6TSFAhoZTYr.r-bTn9Un9lyfIS9B6jJGFfE94rziQi_oeG6snh1iYTpooqvDx_-5ANcYe47FLKKmSpFcwn2svB5woIOhu-M=.vP3Ggck99UyYLXJB_WtQGvgt9bi_RW3ndmiwmhBpdyH-Pn1JZJ6QoE2sLQGiFl-5)
           storage:
             persistentVolume:
               enabled: true
