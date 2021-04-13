@@ -19,7 +19,7 @@ stages:
     credentials: gke-tooling-estafette
     repoUrl: https://charts.cockroachdb.com/
     chart: cockroachdb
-    version: 5.0.6
+    version: 5.1.1
     namespace: estafette-ci
     release: cockroachdb
 
@@ -33,7 +33,7 @@ releases:
         image: extensions/helm:dev
         repoUrl: https://charts.cockroachdb.com/
         chart: cockroachdb
-        version: 5.0.8
+        version: 5.1.1
         namespace: estafette-ci
         release: cockroachdb
         timeout: 300s
@@ -103,3 +103,7 @@ releases:
               enabled: true
               size: 50Gi
               storageClass: fast
+          iap:
+            enabled: true
+            clientId: estafette.secret(LEYF3nen80kTaM1f.R5nuGCATjmkFBBns5hx1xE3y-xAJgBqNnJel_RAJxhij0zG894845k8AZvV4koJz2PC6wVorfNrapyrYusEqWhEmJ2SkqwgnpzG2TAsfWWeWeCxKr9eVzg==.FcKoR2BDkjhaXQ6wuAclk1rj_AQfkxiFmta87kQXwxxwuRbs9Y1nbVP8f5a8yn8F)
+            clientSecret: estafette.secret(RIEgeaySMl_gBXEN.k9lXkMJpiGmlI0iJhsOuyKYDdlmGOah1MAi4u15OKoSWLPn456IdAw==.kdoWydBCyECjBzPYsc6rwJxBcE7NbpV9jApS0ittodESXEMuICJGNceEHKg0kJ25)
