@@ -19,7 +19,7 @@ stages:
     credentials: gke-tooling-estafette
     repoUrl: https://charts.cockroachdb.com/
     chart: cockroachdb
-    version: 5.1.5
+    version: 5.1.8
     namespace: estafette-ci
     release: cockroachdb
 
@@ -33,7 +33,7 @@ releases:
         image: extensions/helm:dev
         repoUrl: https://charts.cockroachdb.com/
         chart: cockroachdb
-        version: 5.1.5
+        version: 5.1.8
         namespace: estafette-ci
         release: cockroachdb
         timeout: 300s
