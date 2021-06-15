@@ -50,13 +50,13 @@ releases:
               prometheus.io/scrape: "true"
               prometheus.io/path: "/_status/vars"
               prometheus.io/port: "8080"
-              prometheus.io/scheme: "http"
+              prometheus.io/scheme: "https"
             resources:
               requests:
-                cpu: 500m
-                memory: 8Gi
+                cpu: 1000m
+                memory: 12Gi
               limits:
-                memory: 8Gi
+                memory: 12Gi
             tolerations:
             - effect: NoSchedule
               key: cloud.google.com/gke-preemptible
