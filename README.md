@@ -1,5 +1,7 @@
 # Cockroachdb
 
+This repository is no longer in use. It is now installed from the https://github.com/estafette/estafette-ci Helm chart instead.
+
 ## Creating the cockroachdb cluster
 
 To install cockroachdb run:
